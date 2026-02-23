@@ -4,9 +4,31 @@ import { login, createPost } from "./atproto";
 
 const KV_KEY_STATE = "feed_state";
 const MAX_STORED_GUIDS = 100;
+const DEFAULT_MAX_POSTS_PER_RUN = 3;
+const MAX_POSTS_PER_RUN_LIMIT = 20;
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function parseMaxPostsPerRun(rawValue: string): number {
+  const parsed = Number.parseInt(rawValue, 10);
+
+  if (!Number.isFinite(parsed) || parsed <= 0) {
+    console.warn(
+      `Invalid MAX_POSTS_PER_RUN="${rawValue}", using default ${DEFAULT_MAX_POSTS_PER_RUN}`,
+    );
+    return DEFAULT_MAX_POSTS_PER_RUN;
+  }
+
+  if (parsed > MAX_POSTS_PER_RUN_LIMIT) {
+    console.warn(
+      `MAX_POSTS_PER_RUN=${parsed} exceeds limit ${MAX_POSTS_PER_RUN_LIMIT}, clamping`,
+    );
+    return MAX_POSTS_PER_RUN_LIMIT;
+  }
+
+  return parsed;
 }
 
 async function getState(kv: KVNamespace): Promise<FeedState> {
@@ -64,7 +86,7 @@ async function run(env: Env): Promise<void> {
   }
 
   // 최신 것부터 최대 N개 선택
-  const maxPosts = parseInt(env.MAX_POSTS_PER_RUN || "3", 10);
+  const maxPosts = parseMaxPostsPerRun(env.MAX_POSTS_PER_RUN || "3");
   const toPost = newItems.slice(0, maxPosts);
 
   // Bluesky 로그인 및 포스팅

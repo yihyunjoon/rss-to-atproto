@@ -1,0 +1,19 @@
+name = "rss-to-bsky"
+main = "src/index.ts"
+compatibility_date = "2025-02-23"
+workers_dev = false
+
+[triggers]
+crons = ["*/5 * * * *"]
+
+[vars]
+RSS_FEED_URL = "https://example.com/feed.xml"
+BSKY_IDENTIFIER = "your-handle.bsky.social"
+MAX_POSTS_PER_RUN = "3"
+
+[observability]
+enabled = true
+
+[[kv_namespaces]]
+binding = "FEED_STATE"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"

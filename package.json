@@ -1,0 +1,22 @@
+{
+  "name": "rss-to-bsky",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.28.2",
+  "dependencies": {
+    "@atproto/api": "^0.18.21",
+    "fast-xml-parser": "^5.3.7"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260228.0",
+    "typescript": "^5.9.3",
+    "wrangler": "^4.67.0"
+  }
+}

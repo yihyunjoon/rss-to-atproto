@@ -88,6 +88,7 @@ async function run(env: Env): Promise<void> {
   // 최신 것부터 최대 N개 선택
   const maxPosts = parseMaxPostsPerRun(env.MAX_POSTS_PER_RUN || "3");
   const toPost = newItems.slice(0, maxPosts);
+  const backfillItems = newItems.slice(maxPosts);
 
   // Bluesky 로그인 및 포스팅
   let agent;
@@ -124,9 +125,9 @@ async function run(env: Env): Promise<void> {
     }
   }
 
-  // 현재 피드의 모든 항목을 seen 처리 (이전 항목 backfill 방지)
-  for (const item of items) {
-    if (!seenSet.has(item.guid) && !state.postedGuids.includes(item.guid)) {
+  // 이번 실행에서 포스팅 대상이 아닌 항목만 seen 처리 (백필 방지)
+  for (const item of backfillItems) {
+    if (!state.postedGuids.includes(item.guid)) {
       state.postedGuids.push(item.guid);
     }
   }

@@ -1,5 +1,5 @@
 {
-  "name": "rss-to-bsky",
+  "name": "rss-to-atproto",
   "version": "1.0.0",
   "description": "",
   "scripts": {

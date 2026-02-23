@@ -1,4 +1,4 @@
-name = "rss-to-bsky"
+name = "rss-to-atproto"
 main = "src/index.ts"
 compatibility_date = "2025-02-23"
 workers_dev = false
@@ -8,6 +8,7 @@ crons = ["*/5 * * * *"]
 
 [vars]
 RSS_FEED_URL = "https://example.com/feed.xml"
+ATPROTO_SERVICE = "https://bsky.social"
 BSKY_IDENTIFIER = "your-handle.bsky.social"
 MAX_POSTS_PER_RUN = "3"
 

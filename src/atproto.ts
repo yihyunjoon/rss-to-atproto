@@ -1,10 +1,11 @@
 import { AtpAgent, BlobRef, RichText } from "@atproto/api";
 
 export async function login(
+  service: string,
   identifier: string,
   password: string,
 ): Promise<AtpAgent> {
-  const agent = new AtpAgent({ service: "https://bsky.social" });
+  const agent = new AtpAgent({ service });
   await agent.login({ identifier, password });
   return agent;
 }
@@ -17,7 +18,7 @@ interface OgMeta {
 
 async function fetchOgMeta(url: string): Promise<OgMeta> {
   const res = await fetch(url, {
-    headers: { "User-Agent": "rss-to-bsky-bot/1.0" },
+    headers: { "User-Agent": "rss-to-atproto-bot/1.0" },
     redirect: "follow",
   });
   const html = await res.text();

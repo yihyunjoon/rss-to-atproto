@@ -1,6 +1,6 @@
 import type { Env, FeedState } from "./types";
 import { fetchFeed } from "./rss";
-import { login, createPost } from "./bluesky";
+import { login, createPost } from "./atproto";
 
 const KV_KEY_STATE = "feed_state";
 const MAX_STORED_GUIDS = 100;
@@ -70,8 +70,8 @@ async function run(env: Env): Promise<void> {
   // Bluesky 로그인 및 포스팅
   let agent;
   try {
-    agent = await login(env.BSKY_IDENTIFIER, env.BSKY_PASSWORD);
-    console.log("Bluesky login OK");
+    agent = await login(env.ATPROTO_SERVICE, env.BSKY_IDENTIFIER, env.BSKY_PASSWORD);
+    console.log("ATProto login OK");
   } catch (e) {
     console.error("Bluesky login failed:", e);
     return;

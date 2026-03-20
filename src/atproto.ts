@@ -1,4 +1,5 @@
 import { AtpAgent, BlobRef, RichText } from "@atproto/api";
+import { decode as decodeEntities } from "html-entities";
 
 const USER_AGENT = "rss-to-atproto-bot/1.0";
 const MAX_IMAGE_SIZE = 976_560; // ~976KB, Bluesky limit
@@ -25,6 +26,15 @@ type OgProperty = "og:title" | "og:description" | "og:image";
 
 function isOgProperty(value: string): value is OgProperty {
   return value === "og:title" || value === "og:description" || value === "og:image";
+}
+
+function decodeHtmlEntities(text: string | null | undefined): string {
+  if (!text) return text ?? "";
+  try {
+    return decodeEntities(text);
+  } catch {
+    return text;
+  }
 }
 
 async function withTimeout<T>(
@@ -98,7 +108,7 @@ async function fetchOgMeta(url: string): Promise<OgMeta> {
             const normalizedProperty = propertyOrName.trim().toLowerCase();
             if (!isOgProperty(normalizedProperty) || og[normalizedProperty]) return;
 
-            const normalizedContent = content.trim();
+            const normalizedContent = decodeHtmlEntities(content.trim());
             if (!normalizedContent) return;
             og[normalizedProperty] = normalizedContent;
           },

@@ -14,6 +14,9 @@ importers:
       fast-xml-parser:
         specifier: ^5.3.7
         version: 5.3.7
+      html-entities:
+        specifier: ^2.6.0
+        version: 2.6.0
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ^4.20260228.0
@@ -467,6 +470,9 @@ packages:
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
 
+  html-entities@2.6.0:
+    resolution: {integrity: sha512-kig+rMn/QOVRvr7c86gQ8lWXq+Hkv6CbAH1hLu+RG338StTpE8Z0b44SDVaqVu7HGKf27frdmUYEs9hTUX/cLQ==}
+
   iso-datestring-validator@2.2.2:
     resolution: {integrity: sha512-yLEMkBbLZTlVQqOnQ4FiMujR6T4DEcCb1xizmvXS+OxuhwcbtynoosRzdMA69zZCShCNAbi+gJ71FxZBBXx1SA==}
 
@@ -892,6 +898,8 @@ snapshots:
 
   fsevents@2.3.3:
     optional: true
+
+  html-entities@2.6.0: {}
 
   iso-datestring-validator@2.2.2: {}
 

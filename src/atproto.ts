@@ -27,6 +27,24 @@ function isOgProperty(value: string): value is OgProperty {
   return value === "og:title" || value === "og:description" || value === "og:image";
 }
 
+const HTML_ENTITIES: Record<string, string> = {
+  "&amp;": "&",
+  "&lt;": "<",
+  "&gt;": ">",
+  "&quot;": '"',
+  "&#x27;": "'",
+  "&#39;": "'",
+  "&apos;": "'",
+  "&nbsp;": "\u00a0",
+};
+
+function decodeHtmlEntities(text: string): string {
+  return text
+    .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
+    .replace(/&#([0-9]+);/g, (_, dec) => String.fromCodePoint(parseInt(dec, 10)))
+    .replace(/&[a-z]+;/gi, (entity) => HTML_ENTITIES[entity] ?? entity);
+}
+
 async function withTimeout<T>(
   timeoutMs: number,
   run: (signal: AbortSignal) => Promise<T>,
@@ -98,7 +116,7 @@ async function fetchOgMeta(url: string): Promise<OgMeta> {
             const normalizedProperty = propertyOrName.trim().toLowerCase();
             if (!isOgProperty(normalizedProperty) || og[normalizedProperty]) return;
 
-            const normalizedContent = content.trim();
+            const normalizedContent = decodeHtmlEntities(content.trim());
             if (!normalizedContent) return;
             og[normalizedProperty] = normalizedContent;
           },
